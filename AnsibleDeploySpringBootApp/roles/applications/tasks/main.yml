@@ -1,0 +1,28 @@
+---
+# file: roles/applications/tasks/main.yml
+
+
+#      - maven_artifact:
+#          group_id: {{ app_groupid }}
+#          artifact_id: {{ app_name }}
+#          repository_url: 'http://192.168.0.254/repository/Snapshots'
+#          username: user
+#          password: ******
+#          dest: /opt/{{ app_name }}/{{ app_name }}-{{ version }}.jar
+
+    - name: copy the jar
+      copy: src=/{{ maven_repo_path }}/{{ app_groupid }}/{{ app_name }}/{{ version }}/{{ app_name }}-{{ version }}.jar dest=/opt/{{ app_name }}-{{ version }}.jar
+
+    - name: unlink the current app
+      file: path=/opt/{{ app_name }}-{{ version }}.jar state=absent
+
+    - name: link to the newly deployed app
+      file: path=/opt/{{ app_name }}-{{ version }}.jar src=/opt/{{ app_name }}-{{ version }}.jar state=link
+
+    - name: stops running app
+      sudo: yes
+      service: name=app state=stopped
+
+    - name: starts the app
+      sudo: yes
+      command: java -jar opt/{{ app_name }}-{{ version }}.jar

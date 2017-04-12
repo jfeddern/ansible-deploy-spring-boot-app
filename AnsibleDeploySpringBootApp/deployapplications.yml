@@ -1,0 +1,7 @@
+---
+# file: deployapplications.yml
+
+- name: deploys the application
+  hosts: webservers
+  roles: 
+    - applications

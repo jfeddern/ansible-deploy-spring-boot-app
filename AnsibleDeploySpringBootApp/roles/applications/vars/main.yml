@@ -1,0 +1,4 @@
+maven_repo_path: var/lib/jenkins/.m2/repository/
+app_name: '{{ artifact }}'
+app_version: '{{ version }}'
+app_groupid: '{{ groupid }}'
